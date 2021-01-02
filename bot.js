@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-const token = 'noPIucLg9VSM_pZn4TILDKWUuSZZSnwU';
-
 const generalVoiceChannelId = '744013183659802679';
 const notificationTextChannelId = '794679849754558525';
 
@@ -26,5 +24,5 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   }
 });
 
-client.login(token); // for local testing
-// client.login(process.env.BOT_TOKEN); // BOT_TOKEN is the Client Secret
+client.login(process.env.BOT_TOKEN)
+  .catch((err) => console.error(err));
