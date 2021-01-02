@@ -1,8 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-client.login(process.env.BOT_TOKEN); //BOT_TOKEN is the Client Secret
-
 const generalVoiceChannelId = '744013183659802679';
 const notificationTextChannelId = '794679849754558525';
 
@@ -25,3 +23,5 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     textChannel.send(`${newState.member.displayName} has left the General voice channel.`);
   }
 });
+
+client.login(process.env.BOT_TOKEN); //BOT_TOKEN is the Client Secret
