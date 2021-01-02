@@ -13,7 +13,7 @@ bot.on('voiceStateUpdate', (oldMember, newMember) => {
   let botMember = oldMember.guild.member(bot.user),
     botChannel = botMember ? botMember.voiceChannel.id : null;
 
-  // Here I'm getting the channel, just replace VVV this VVV with the channel's ID
+  // Here I'm getting the channel, just replace this string VVV with the channel's ID
   let textChannel = oldMember.guild.channels.get('voice-channel-notifications');
   if (!textChannel) throw new Error("That text channel does not exist.");
 
