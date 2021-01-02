@@ -3,26 +3,29 @@ const client = new Discord.Client();
 
 client.login(process.env.BOT_TOKEN); //BOT_TOKEN is the Client Secret
 
-client.on('voiceStateUpdate', (oldMember, newMember) => {
-  // Here I'm storing the IDs of their voice channels, if available
-  let oldChannel = oldMember.voiceChannel ? oldMember.voiceChannel.id : null;
-  let newChannel = newMember.voiceChannel ? newMember.voiceChannel.id : null;
+const generalVoiceChannelId = '744013183659802679';
+const notificationTextChannelId = '794679849754558525';
+
+client.on('voiceStateUpdate', (oldState, newState) => {
+  console.log("oldState", oldState)
+  console.log("newState", newState)
+  // store the voice channel id's
+  let oldChannel = oldState.voiceChannel ? oldState.voiceChannel.id : null;
+  let newChannel = newState.voiceChannel ? newState.voiceChannel.id : null;
   if (oldChannel == newChannel) return; // If there has been no change, exit
 
-  // Here I'm getting the bot's channel (client.voiceChannel does not exist)
-  let botMember = oldMember.guild.member(client.user),
-    botChannel = botMember ? botMember.voiceChannel.id : null;
-
-  // Here I'm getting the channel, just replace this string VVV with the channel's ID
-  let textChannel = oldMember.guild.channels.get('794679849754558525');
+  // get the text channel for notifications
+  let textChannel = oldState.guild.channels.get(notificationTextChannelId);
   if (!textChannel) throw new Error("That text channel does not exist.");
 
+  // get the guildMember form of the user
+  let oldGuildMember = oldState.guild.member(client.user),
+    oldVoiceChannelId = oldGuildMember ? oldGuildMember.voiceChannel.id : null;
+
   // Here I don't need to check if they're the same, since it would've exit before
-  if (newChannel == botChannel) {
-    // console.log("A user joined.");
-    textChannel.send(`${newMember} has joined the voice channel.`);
+  if (newChannel == oldVoiceChannelId) {
+    textChannel.send(`${newState.member.displayName} has joined the voice channel.`);
   } else if (oldChannel == botChannel) {
-    // console.log("A user left.");
-    textChannel.send(`${newMember} has left the voice channel.`);
+    textChannel.send(`${newState.member.displayName} has left the voice channel.`);
   }
 });
