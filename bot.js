@@ -5,8 +5,6 @@ const generalVoiceChannelId = '744013183659802679';
 const notificationTextChannelId = '794679849754558525';
 
 client.on('voiceStateUpdate', (oldState, newState) => {
-  console.log("oldState", oldState)
-  console.log("newState", newState)
   // store the voice channel id's
   let oldChannelId = oldState.channelID || null;
   let newChannelId = newState.channelID || null;
