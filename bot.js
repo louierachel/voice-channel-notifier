@@ -10,18 +10,18 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   console.log("oldState", oldState)
   console.log("newState", newState)
   // store the voice channel id's
-  let oldChannel = oldState.channelID || null;
-  let newChannel = newState.channelID || null;
-  if (oldChannel == newChannel) return; // If there has been no change, exit
+  let oldChannelId = oldState.channelID || null;
+  let newChannelId = newState.channelID || null;
+  if (oldChannelId == newChannelId) return; // If there has been no change, exit
 
   // get the text channel for notifications
-  let textChannel = oldState.guild.channels.cache.get(notificationTextChannelId);
+  let textChannel = newState.guild.channels.cache.get(notificationTextChannelId);
   if (!textChannel) throw new Error("That text channel does not exist.");
 
   // if new channel is not undefined, send a messages
-  if (newChannel) {
-    textChannel.send(`${newState.member.displayName} has joined a voice channel.`);
+  if (newChannelId === generalVoiceChannelId) {
+    textChannel.send(`${newState.member.displayName} has joined the General voice channel.`);
   } else { // if new channel is undefined, the user left all voice channels
-    textChannel.send(`${newState.member.displayName} has left all voice channels.`);
+    textChannel.send(`${newState.member.displayName} has left the General voice channel.`);
   }
 });
