@@ -18,14 +18,10 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   let textChannel = oldState.guild.channels.get(notificationTextChannelId);
   if (!textChannel) throw new Error("That text channel does not exist.");
 
-  // get the guildMember form of the user
-  let oldGuildMember = oldState.guild.member(client.user),
-    oldVoiceChannelId = oldGuildMember ? oldGuildMember.voiceChannel.id : null;
-
   // Here I don't need to check if they're the same, since it would've exit before
-  if (newChannel == oldVoiceChannelId) {
+  if (newChannel) {
     textChannel.send(`${newState.member.displayName} has joined the voice channel.`);
-  } else if (oldChannel == botChannel) {
+  } else {
     textChannel.send(`${newState.member.displayName} has left the voice channel.`);
   }
 });
