@@ -10,18 +10,18 @@ client.on('voiceStateUpdate', (oldState, newState) => {
   console.log("oldState", oldState)
   console.log("newState", newState)
   // store the voice channel id's
-  let oldChannel = oldState.voiceChannel ? oldState.voiceChannel.id : null;
-  let newChannel = newState.voiceChannel ? newState.voiceChannel.id : null;
+  let oldChannel = oldState.channelID || null;
+  let newChannel = newState.channelID || null;
   if (oldChannel == newChannel) return; // If there has been no change, exit
 
   // get the text channel for notifications
-  let textChannel = oldState.guild.channels.get(notificationTextChannelId);
+  let textChannel = oldState.guild.channels.cache.get(notificationTextChannelId);
   if (!textChannel) throw new Error("That text channel does not exist.");
 
-  // Here I don't need to check if they're the same, since it would've exit before
+  // if new channel is not undefined, send a messages
   if (newChannel) {
-    textChannel.send(`${newState.member.displayName} has joined the voice channel.`);
-  } else {
-    textChannel.send(`${newState.member.displayName} has left the voice channel.`);
+    textChannel.send(`${newState.member.displayName} has joined a voice channel.`);
+  } else { // if new channel is undefined, the user left all voice channels
+    textChannel.send(`${newState.member.displayName} has left all voice channels.`);
   }
 });
